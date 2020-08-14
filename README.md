@@ -11,4 +11,7 @@ Ein Stepcraft wurde mit Sensorik ausgestattet, um unterschiedliche Prozesse zu t
 </p>
 
 ## Example
-
+Ein Anwendungsbeispiel ist im Folgenden zu sehen.
+<p align="center">
+  <img src="https://github.com/tlucky/retrofit_stepcraft/blob/master/images/Demo.gif" width="500" title="Demo">
+</p>
