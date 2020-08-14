@@ -1,0 +1,31 @@
+/*Zeitfunktion*/
+CREATE OR REPLACE FUNCTION zeitstempel_update() RETURNS TRIGGER 
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    NEW.zeitstempel = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$;
+
+/*Trigger für prim_werkzeuge*/
+CREATE TRIGGER prim_trigger
+  BEFORE UPDATE
+  ON prim_werkzeuge
+  FOR EACH ROW
+  EXECUTE PROCEDURE zeitstempel_update();
+
+/*Trigger für sek_werkzeuge*/
+CREATE TRIGGER sek_trigger
+  BEFORE UPDATE
+  ON sek_werkzeuge
+  FOR EACH ROW
+  EXECUTE PROCEDURE zeitstempel_update();
+
+/*Trigger für maschinen*/
+CREATE TRIGGER maschinen_trigger
+  BEFORE UPDATE
+  ON maschinen
+  FOR EACH ROW
+  EXECUTE PROCEDURE zeitstempel_update();

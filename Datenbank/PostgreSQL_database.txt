@@ -1,0 +1,59 @@
+CREATE TABLE maschinen
+(
+    id_maschine serial PRIMARY KEY,
+	name character varying(75),
+	hersteller character varying(75),
+	baujahr integer,
+        beschreibung character varying(100),
+    	farbe character varying(75),
+    	leerlaufleistung real,
+	laufzeit real
+);
+
+CREATE TABLE prim_werkzeuge
+(
+	id_prim_werkzeug serial PRIMARY KEY,
+	name character varying(75),
+	laufzeit real,
+	max_laufzeit real,
+	verbleibende_laufzeit real,
+	zeitstempel timestamp with time zone default current_timestamp
+);	
+
+CREATE TABLE sek_werkzeuge
+(
+	id_sek_werkzeug serial PRIMARY KEY,
+	id_prim_werkzeug integer REFERENCES prim_werkzeuge (id_prim_werkzeug) NOT NULL,
+	name character varying(75),
+	laufzeit real,
+	max_laufzeit real,
+	verbleibende_laufzeit real,
+	zeitstempel timestamp with time zone default current_timestamp
+);
+
+CREATE TABLE ausgeruestet
+(
+    	id_ausgeruestet serial PRIMARY KEY,
+    	id_maschine integer REFERENCES maschinen (id_maschine) NOT NULL,
+	id_prim_werkzeug integer REFERENCES prim_werkzeuge (id_prim_werkzeug) NOT NULL,
+	id_sek_werkzeug integer REFERENCES sek_werkzeuge (id_sek_werkzeug)
+);
+
+CREATE TABLE sensoren
+(
+	id_sensor serial PRIMARY KEY,
+	id_maschine integer REFERENCES maschinen (id_maschine) NOT NULL,
+	name character varying(75),
+	si_einheit character varying (20),
+	messgroesse character varying (75)
+);
+
+CREATE TABLE sensordaten
+(
+	id_daten serial PRIMARY KEY,
+	id_prim_werkzeug integer REFERENCES prim_werkzeuge (id_prim_werkzeug),
+	id_sek_werkzeug integer REFERENCES sek_werkzeuge (id_sek_werkzeug),
+	id_sensor integer REFERENCES sensoren (id_sensor) NOT NULL,
+	wert real NOT NULL,
+	zeitstempel timestamp with time zone default current_timestamp
+);
